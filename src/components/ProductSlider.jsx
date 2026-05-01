@@ -11,20 +11,18 @@ import p10 from "../assets/product10.webp";
 import banner from "../assets/wide-banner.webp";
 
 import { useRef, useState } from "react";
-import { FiShoppingCart, FiEye, FiHeart, FiRepeat } from "react-icons/fi";
+import ProductCard from "./ProductCard";
 
 
 const products = [
-    { image: p1, title: "Breathable Mesh Slip-Ons", brand: "AirWalk", price: "$25.00" },
-    { image: p2, title: "Premium Leather Chelsea Boots", brand: "LuxeFeet", price: "$25.00" },
-    { image: p3, title: "Chunky Platform Sandals", brand: "BoldWalks", price: "$25.00", oldPrice: "$32.00", tag: "-21%" },
-    { image: p4, title: "Lightweight Running Shoes", brand: "SprintMax", price: "$0.00", tag: "SOLD OUT" },
-    { image: p5, title: "Classic Sneakers", brand: "UrbanStep", price: "$30.00" },
-    { image: p6, title: "Sport Shoes", brand: "FastFit", price: "$40.00" },
-    { image: p7, title: "Daily Walk Shoes", brand: "MoveOn", price: "$28.00" },
-    { image: p8, title: "Comfort Sandals", brand: "SoftStep", price: "$22.00" },
-    { image: p9, title: "Running Pro Shoes", brand: "RunX", price: "$50.00" },
-    { image: p10, title: "Street Sneakers", brand: "HypeWalk", price: "$35.00" },
+    { id: 1, image: p1, hoverImage: p10, title: "Breathable Mesh Slip-Ons", brand: "AirWalk", price: "$25.00" },
+    { id: 2, image: p2, hoverImage: p6, title: "Premium Leather Chelsea Boots", brand: "LuxeFeet", price: "$25.00" },
+    { id: 3, image: p3, hoverImage: p7, title: "Chunky Platform Sandals", brand: "BoldWalks", price: "$25.00", oldPrice: "$32.00", tag: "-21%" },
+    { id: 4, image: p4, hoverImage: p8, title: "Lightweight Running Shoes", brand: "SprintMax", price: "$0.00", tag: "SOLD OUT" },
+    { id: 5, image: p5, hoverImage: p9, title: "Classic Sneakers", brand: "UrbanStep", price: "$30.00" },
+    { id: 6, image: p8, hoverImage: p10, title: "Sport Shoes", brand: "FastFit", price: "$40.00" },
+    { id: 7, image: p7, hoverImage: p1, title: "Daily Walk Shoes", brand: "MoveOn", price: "$28.00" },
+    { id: 8, image: p8, hoverImage: p2, title: "Comfort Sandals", brand: "SoftStep", price: "$22.00" },
 ];
 
 export default function ProductSlider() {
@@ -33,6 +31,7 @@ export default function ProductSlider() {
     const [isDown, setIsDown] = useState(false);
     const [startX, setStartX] = useState(0);
     const [scrollLeft, setScrollLeft] = useState(0);
+    const [activeTab, setActiveTab] = useState("featured");
 
     // Mouse events
     const handleMouseDown = (e) => {
@@ -52,6 +51,23 @@ export default function ProductSlider() {
         sliderRef.current.scrollLeft = scrollLeft - walk;
     };
 
+    const getFilteredProducts = () => {
+        switch (activeTab) {
+            case "new":
+                return [...products].reverse(); // newest first
+
+            case "best":
+                return [...products]
+                    .sort((a, b) => parseFloat(b.price.slice(1)) - parseFloat(a.price.slice(1)))
+                    .slice(0, 4); // highest price = best seller (example logic)
+
+            default: // featured
+                return [...products]
+                    .sort((a, b) => parseFloat(a.price.slice(1)) - parseFloat(b.price.slice(1)))
+                    .slice(0, 4); // lowest price = featured
+        }
+    };
+
     return (
         <>
 
@@ -67,10 +83,38 @@ export default function ProductSlider() {
                         Sneakers & Kicks
                     </h2>
 
-                    <div className="flex justify-center gap-8 text-sm">
-                        <span className="border-b-2 border-black pb-1">FEATURED</span>
-                        <span className="text-gray-400">NEW ARRIVALS</span>
-                        <span className="text-gray-400">BEST SELLER</span>
+                    <div className="flex justify-center gap-8 text-sm cursor-pointer">
+
+                        <span
+                            onClick={() => setActiveTab("featured")}
+                            className={`pb-1 ${activeTab === "featured"
+                                ? "border-b-2 border-black text-black"
+                                : "text-gray-400"
+                                }`}
+                        >
+                            FEATURED
+                        </span>
+
+                        <span
+                            onClick={() => setActiveTab("new")}
+                            className={`pb-1 ${activeTab === "new"
+                                ? "border-b-2 border-black text-black"
+                                : "text-gray-400"
+                                }`}
+                        >
+                            NEW ARRIVALS
+                        </span>
+
+                        <span
+                            onClick={() => setActiveTab("best")}
+                            className={`pb-1 ${activeTab === "best"
+                                ? "border-b-2 border-black text-black"
+                                : "text-gray-400"
+                                }`}
+                        >
+                            BEST SELLER
+                        </span>
+
                     </div>
                 </div>
 
@@ -84,67 +128,9 @@ export default function ProductSlider() {
                     onMouseUp={handleMouseUp}
                     onMouseMove={handleMouseMove}
                 >
-                    {products.map((item, i) => (
-                        <div
-                            key={i}
-                            className="min-w-[70%] sm:min-w-[45%] md:min-w-[23%] flex-shrink-0 group relative overflow-hidden bg-white"
-                        >
-                            {/* Main Content Wrapper (Slides UP) */}
-                            <div className="transition-transform duration-500 ease-in-out group-hover:-translate-y-14 cursor-pointer">
-                                {/* Image */}
-                                <div className="relative w-full h-[280px] overflow-hidden">
-
-                                    {/* TAG / DISCOUNT */}
-                                    {item.tag && (
-                                        <span className="absolute top-3 left-3 text-[10px] font-bold px-2 py-1 bg-white text-red-500 z-10 shadow-sm">
-                                            {item.tag}
-                                        </span>
-                                    )}
-
-                                    {/* IMAGE FULL COVER */}
-                                    <img
-                                        src={item.image}
-                                        alt={item.title}
-                                        className="w-full h-full object-cover transition-transform duration-500"
-                                    />
-                                </div>
-
-                                {/* Info Container (Slides UP with image) */}
-                                <div className="mt-4 px-1">
-                                    <p className="text-sm text-gray-500 font-medium">
-                                        {item.price}
-                                        {item.oldPrice && (
-                                            <span className="line-through text-gray-300 ml-2">
-                                                {item.oldPrice}
-                                            </span>
-                                        )}
-                                    </p>
-
-                                    <h3 className="mt-1 text-[16px] font-medium text-[#111111] leading-tight">
-                                        {item.title}
-                                    </h3>
-
-                                    <p className="text-xs text-gray-400 mt-1 uppercase tracking-wider">
-                                        {item.brand}
-                                    </p>
-                                </div>
-                            </div>
-
-                            {/* Bottom Action Bar (Appears from BELOW) */}
-                            <div className="absolute bottom-0 left-0 w-full bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out px-1 py-4 flex justify-between items-center border-t border-dotted border-gray-200">
-                                {/* Add to Cart */}
-                                <button className="flex items-center gap-2 text-[11px] font-bold tracking-[2px] text-[#111111] hover:text-[#C06C84] transition-colors uppercase">
-                                    <FiShoppingCart className="text-base" />
-                                    ADD TO CART
-                                </button>
-
-                                {/* Icons */}
-                                <div className="flex items-center gap-3 text-gray-400">
-                                    <FiEye className="cursor-pointer hover:text-black transition-colors text-[17px]" title="Quick View" />
-                                    <FiHeart className="cursor-pointer hover:text-black transition-colors text-[17px]" title="Wishlist" />
-                                    <FiRepeat className="cursor-pointer hover:text-black transition-colors text-[15px]" title="Compare" />
-                                </div>
-                            </div>
+                    {getFilteredProducts().map((item, i) => (
+                        <div key={i} className="min-w-[70%] sm:min-w-[45%] md:min-w-[23%] flex-shrink-0">
+                            <ProductCard product={item} />
                         </div>
                     ))}
 
