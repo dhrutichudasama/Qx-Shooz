@@ -144,7 +144,7 @@ const Header = () => {
               {/* BLOG */}
               <li className="border-b border-gray-200">
                 <div
-                  onClick={() => toggleMenu("blog")}
+                  onClick={() => { navigate('/blog'); setIsSidebarOpen(false); }}
                   className="flex justify-between items-center py-2 cursor-pointer hover:text-[#C06C84]"
                 >
                   Blog <FiChevronDown
@@ -176,7 +176,7 @@ const Header = () => {
 
                 {openMenu === "pages" && (
                   <ul className="pl-4 pb-2 text-sm text-gray-600">
-                    <li className="py-1">About us</li>
+                    <li className="py-1 hover:text-[#C06C84] cursor-pointer" onClick={() => { navigate('/about'); setIsSidebarOpen(false); }}>About us</li>
                     <li className="py-1">Contact</li>
                     <li className="py-1">FAQ</li>
                     <li className="py-1">LookBook</li>
@@ -285,25 +285,43 @@ const Header = () => {
                     <div>
                       <h3 className="font-semibold mb-4 text-[#C06C84]">Men</h3>
                       <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="hover:text-[#C06C84] cursor-pointer">Sneakers</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer">Boots</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer">Formal</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Sneakers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Boots</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Formal</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>View All</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Collections</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>New Arrivals</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Best Sellers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Coming Soon</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Sales & Offers</li>
                       </ul>
                     </div>
                     <div>
                       <h3 className="font-semibold mb-4 text-[#C06C84]">Women</h3>
                       <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="hover:text-[#C06C84] cursor-pointer">Heels</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer">Flats</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer">Sneakers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Heels</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Flats</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Sneakers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>View All</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Collections</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>New Arrivals</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Best Sellers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Coming Soon</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Sales & Offers</li>
                       </ul>
                     </div>
                     <div>
                       <h3 className="font-semibold mb-4 text-[#C06C84]">Kids</h3>
                       <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="hover:text-[#C06C84] cursor-pointer">School Shoes</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer">Casual</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer">Sports</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>School Shoes</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Casual</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Sports</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>View All</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Collections</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>New Arrivals</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Best Sellers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Coming Soon</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Sales & Offers</li>
                       </ul>
                     </div>
                     <div>
@@ -323,25 +341,43 @@ const Header = () => {
                     <div>
                       <h3 className="font-semibold mb-4">Collections</h3>
                       <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="hover:text-[#C06C84] cursor-pointer">New Arrivals</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer">Best Sellers</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer">Trending</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>New Arrivals</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Best Sellers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Trending</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>View All</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Collections</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>New Arrivals</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Best Sellers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Coming Soon</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Sales & Offers</li>
                       </ul>
                     </div>
                     <div>
                       <h3 className="font-semibold mb-4">Types</h3>
                       <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="hover:text-[#C06C84] cursor-pointer">Running</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer">Casual</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer">Luxury</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Running</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Casual</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Luxury</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>View All</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Collections</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>New Arrivals</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Best Sellers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Coming Soon</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Sales & Offers</li>
                       </ul>
                     </div>
                     <div>
                       <h3 className="font-semibold mb-4">Brands</h3>
                       <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="hover:text-[#C06C84] cursor-pointer">Nike</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer">Adidas</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer">Puma</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Nike</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Adidas</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Puma</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>View All</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Collections</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>New Arrivals</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Best Sellers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Coming Soon</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Sales & Offers</li>
                       </ul>
                     </div>
                     <div>
@@ -353,7 +389,7 @@ const Header = () => {
 
               {/* Blog Mega Menu */}
                <li className="static group">
-                <div className="flex items-center gap-1 cursor-pointer hover:text-[#C06C84] transition-colors">
+                <div className="flex items-center gap-1 cursor-pointer hover:text-[#C06C84] transition-colors" onClick={() => navigate('/blog')}>
                   Blog <FiChevronDown className="text-xs group-hover:rotate-180 transition-transform" />
                 </div>
                 <div className="absolute left-0 w-screen bg-white shadow-xl opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 z-50 border-t border-gray-100 top-full">
@@ -361,29 +397,47 @@ const Header = () => {
                     <div>
                       <h3 className="font-semibold mb-4">Collections</h3>
                       <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="hover:text-[#C06C84] cursor-pointer">New Arrivals</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer">Best Sellers</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer">Trending</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>New Arrivals</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Best Sellers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Trending</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>View All</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Collections</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>New Arrivals</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Best Sellers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Coming Soon</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Sales & Offers</li>
                       </ul>
                     </div>
                     <div>
                       <h3 className="font-semibold mb-4">Types</h3>
                       <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="hover:text-[#C06C84] cursor-pointer">Running</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer">Casual</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer">Luxury</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Running</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Casual</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Luxury</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>View All</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Collections</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>New Arrivals</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Best Sellers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Coming Soon</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Sales & Offers</li>
                       </ul>
                     </div>
                     <div>
                       <h3 className="font-semibold mb-4">Brands</h3>
                       <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="hover:text-[#C06C84] cursor-pointer">Nike</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer">Adidas</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer">Puma</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Nike</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Adidas</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Puma</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>View All</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Collections</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>New Arrivals</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Best Sellers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Coming Soon</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Sales & Offers</li>
                       </ul>
                     </div>
                     <div>
-                      <img src="/images/header-product.webp" className="rounded-lg h-[150px] object-cover w-full shadow-md" />
+                      <img src="/images/header-product.webp" className="rounded-lg h-[150px] object-cover w-full shadow-md cursor-pointer" onClick={() => navigate('/blog')} />
                     </div>
                   </div>
                 </div>
@@ -394,12 +448,12 @@ const Header = () => {
                   Pages <FiChevronDown className="text-xs group-hover:rotate-180 transition-transform" />
                 </div>
                 <ul className="absolute top-full left-0 bg-white shadow-lg rounded-md opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-3 group-hover:translate-y-0 transition-all duration-300 w-[200px] py-3 z-50 border border-gray-50">
-                  <li className="px-4 py-2 hover:bg-gray-50 hover:text-[#C06C84] cursor-pointer transition-colors">About Us</li>
-                  <li className="px-4 py-2 hover:bg-gray-50 hover:text-[#C06C84] cursor-pointer transition-colors">Contact Us</li>
-                  <li className="px-4 py-2 hover:bg-gray-50 hover:text-[#C06C84] cursor-pointer transition-colors">FAQ</li>
-                  <li className="px-4 py-2 hover:bg-gray-50 hover:text-[#C06C84] cursor-pointer transition-colors">LookBook</li>
-                  <li className="px-4 py-2 hover:bg-gray-50 hover:text-[#C06C84] cursor-pointer transition-colors">SizeGuide</li>
-                  <li className="px-4 py-2 hover:bg-gray-50 hover:text-[#C06C84] cursor-pointer transition-colors">Whishlist</li>
+                  <li className="px-4 py-2 hover:bg-gray-50 hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/about')}>About Us</li>
+                  <li className="px-4 py-2 hover:bg-gray-50 hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/about')}>About Us 2</li>
+                  <li className="px-4 py-2 hover:bg-gray-50 hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/about')}>About Us 3</li>
+                  <li className="px-4 py-2 hover:bg-gray-50 hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/contact')}>Contact Us</li>
+                  <li className="px-4 py-2 hover:bg-gray-50 hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/faq')}>FAQ</li>
+                  <li className="px-4 py-2 hover:bg-gray-50 hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/wishlist')}>Whishlist</li>
                 </ul>
               </li>
 

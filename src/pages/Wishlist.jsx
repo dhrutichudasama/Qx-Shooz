@@ -49,7 +49,7 @@ export default function Wishlist() {
                                     <h3 className="text-[18px] font-medium text-[#111111] mb-1 leading-tight group-hover:text-[#C06C84] transition-colors">
                                         {item.title}
                                     </h3>
-                                    <p className="text-gray-500 font-medium">${parseFloat(item.price.replace('$', '')).toFixed(2)}</p>
+                                    <p className="text-gray-500 font-medium">${parseFloat(String(item.price).replace('$', '')).toFixed(2)}</p>
                                 </div>
                                 
                                 <div className="mt-4 flex flex-col gap-2">

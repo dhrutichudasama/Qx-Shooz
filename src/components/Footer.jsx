@@ -10,7 +10,7 @@ const Footer = () => {
     };
 
     const informationLinks = [
-        { name: 'About Us', path: '#' },
+        { name: 'About Us', path: '/about' },
         { name: 'Privacy Policy', path: '#' },
         { name: 'Returns Policy', path: '#' },
         { name: 'Shipping Policy', path: '#' },
@@ -34,7 +34,7 @@ const Footer = () => {
     ];
 
     const supportLinks = [
-        { name: 'Contact Us', path: '#' },
+        { name: 'Contact Us', path: '/contact' },
         { name: 'Newsletter', path: '#' },
         { name: 'Gift Cards', path: '#' },
         { name: 'Sign In', path: '#' },

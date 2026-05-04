@@ -31,19 +31,25 @@ export const ShopProvider = ({ children }) => {
     }, [wishlistItems]);
 
     const addToCart = (product) => {
+        const addedQuantity = product.quantity || 1;
         setCartItems((prev) => {
             const existingItem = prev.find((item) => item.title === product.title);
             if (existingItem) {
-                toast.success(`Updated ${product.title} quantity in cart`);
                 return prev.map((item) =>
                     item.title === product.title
-                        ? { ...item, quantity: item.quantity + 1 }
+                        ? { ...item, quantity: item.quantity + addedQuantity }
                         : item
                 );
             }
-            toast.success(`${product.title} added to cart`);
-            return [...prev, { ...product, quantity: 1 }];
+            return [...prev, { ...product, quantity: addedQuantity }];
         });
+        
+        const existingItem = cartItems.find((item) => item.title === product.title);
+        if (existingItem) {
+            toast.success(`Updated ${product.title} quantity in cart`);
+        } else {
+            toast.success(`${product.title} added to cart`);
+        }
     };
 
     const removeFromCart = (title) => {
@@ -64,12 +70,17 @@ export const ShopProvider = ({ children }) => {
         setWishlistItems((prev) => {
             const exists = prev.find((item) => item.title === product.title);
             if (exists) {
-                toast.error(`${product.title} is already in wishlist`);
-                return prev;
+                return prev.filter(item => item.title !== product.title);
             }
-            toast.success(`${product.title} added to wishlist`);
             return [...prev, product];
         });
+        
+        const exists = wishlistItems.find((item) => item.title === product.title);
+        if (exists) {
+            toast.error(`Removed ${product.title} from wishlist`);
+        } else {
+            toast.success(`${product.title} added to wishlist`);
+        }
     };
 
     const removeFromWishlist = (title) => {

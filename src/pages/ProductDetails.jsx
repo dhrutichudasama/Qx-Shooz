@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { products } from '../data/products';
 import { useShop } from '../context/ShopContext';
-import { FiHeart, FiShoppingBag, FiMinus, FiPlus, FiChevronRight, FiChevronLeft, FiShare2, FiTruck, FiRotateCcw, FiShield, FiTag, FiChevronDown, FiPlusCircle, FiMinusCircle } from 'react-icons/fi';
+import { FiHeart, FiShoppingBag, FiMinus, FiPlus, FiChevronRight, FiChevronLeft, FiShare2, FiTruck, FiRotateCcw, FiShield, FiTag, FiChevronDown, FiPlusCircle, FiMinusCircle, FiRepeat, FiEye } from 'react-icons/fi';
 import ProductCard from '../components/ProductCard';
 import wideBanner from '../assets/wide-banner.webp';
 import banner1 from '../assets/banner-1.webp';
@@ -37,6 +37,18 @@ export default function ProductDetails() {
         setOpenFaq(openFaq === index ? null : index);
     };
 
+    const handlePrevImage = () => {
+        const currentIndex = thumbnails.indexOf(selectedImage);
+        const newIndex = currentIndex <= 0 ? thumbnails.length - 1 : currentIndex - 1;
+        setSelectedImage(thumbnails[newIndex]);
+    };
+
+    const handleNextImage = () => {
+        const currentIndex = thumbnails.indexOf(selectedImage);
+        const newIndex = currentIndex === thumbnails.length - 1 ? 0 : currentIndex + 1;
+        setSelectedImage(thumbnails[newIndex]);
+    };
+
     return (
         <div className="bg-white">
             {/* Breadcrumbs */}
@@ -60,10 +72,10 @@ export default function ProductDetails() {
                                 alt={product.title} 
                                 className="w-full h-full object-contain p-10 transition-transform duration-700 group-hover:scale-110"
                             />
-                            <button className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-md flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button onClick={handlePrevImage} className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-md flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                                 <FiChevronLeft />
                             </button>
-                            <button className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-md flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                            <button onClick={handleNextImage} className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white shadow-md flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                                 <FiChevronRight />
                             </button>
                         </div>
@@ -82,103 +94,203 @@ export default function ProductDetails() {
 
                     {/* Right: Info */}
                     <div className="lg:w-1/2">
-                        <h1 className="text-4xl font-bold text-[#111111] mb-2">{product.title}</h1>
-                        <p className="text-2xl font-semibold text-[#C06C84] mb-6">${product.price.toFixed(2)}</p>
+                        <h1 className="text-3xl font-bold text-[#111111] mb-2">{product.title}</h1>
+                        <p className="text-2xl font-semibold text-[#111111] mb-6">${product.price.toFixed(2)}</p>
                         
-                        {/* Rating placeholder */}
-                        <div className="flex items-center gap-1 mb-6">
-                            {[1, 2, 3, 4, 5].map(s => (
-                                <span key={s} className="text-yellow-400">★</span>
-                            ))}
-                            <span className="text-gray-400 text-sm ml-2">(4.8 / 5.0)</span>
-                        </div>
-
-                        <p className="text-gray-500 leading-relaxed mb-8">
-                            Experience ultimate comfort with the Breathable Mesh Slip-Ons. Designed for those on the move, these shoes feature a high-performance mesh upper and a cushioned sole that feels like walking on clouds.
-                        </p>
-
-                        <div className="space-y-6 border-t border-b border-gray-100 py-8 mb-8">
-                            {/* Color Selection */}
-                            <div>
-                                <h4 className="text-sm font-bold uppercase tracking-widest mb-4">Color: <span className="font-medium text-gray-500 ml-2">{selectedColor}</span></h4>
-                                <div className="flex gap-3">
-                                    {['Purple', 'Navy', 'Black', 'Green'].map(color => (
-                                        <div 
-                                            key={color}
-                                            onClick={() => setSelectedColor(color)}
-                                            className={`w-8 h-8 rounded-full cursor-pointer border-2 transition-all p-0.5 ${selectedColor === color ? 'border-black' : 'border-transparent'}`}
-                                        >
-                                            <div className={`w-full h-full rounded-full bg-${color.toLowerCase()}-500 shadow-inner`} style={{ backgroundColor: color.toLowerCase() }}></div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
+                        <div className="space-y-6 border-t border-gray-100 py-6">
                             {/* Size Selection */}
                             <div>
-                                <h4 className="text-sm font-bold uppercase tracking-widest mb-4">Size: <span className="font-medium text-gray-500 ml-2">{selectedSize}</span></h4>
+                                <h4 className="text-sm font-medium text-gray-500 mb-4">Size : <span className="text-black">{selectedSize}</span></h4>
                                 <div className="flex gap-2">
-                                    {['S', 'M', 'L', 'XL'].map(size => (
+                                    {['S', 'M', 'L'].map(size => (
                                         <button 
                                             key={size}
                                             onClick={() => setSelectedSize(size)}
-                                            className={`w-12 h-12 flex items-center justify-center border text-sm font-medium transition-all ${selectedSize === size ? 'bg-black text-white border-black' : 'hover:border-black text-gray-600'}`}
+                                            className={`w-12 h-12 flex items-center justify-center border text-sm font-medium transition-all ${selectedSize === size ? 'border-black bg-white shadow-inner' : 'border-gray-200 hover:border-black text-gray-600'}`}
                                         >
                                             {size}
                                         </button>
                                     ))}
                                 </div>
                             </div>
-                        </div>
 
-                        {/* Actions */}
-                        <div className="flex flex-wrap items-center gap-4 mb-8">
-                            <div className="flex items-center border border-gray-200 h-14">
-                                <button onClick={() => handleQuantityChange(-1)} className="px-5 hover:text-[#C06C84] transition-colors"><FiMinus /></button>
-                                <span className="w-10 text-center font-semibold">{quantity}</span>
-                                <button onClick={() => handleQuantityChange(1)} className="px-5 hover:text-[#C06C84] transition-colors"><FiPlus /></button>
+                            {/* Color Selection */}
+                            <div>
+                                <h4 className="text-sm font-medium text-gray-500 mb-4">Color : <span className="text-black">{selectedColor}</span></h4>
+                                <div className="flex flex-wrap gap-3">
+                                    {['Black', 'Navy', 'Maroon', 'Tan', 'Rust', 'Teal', 'Magenta', 'Grey', 'Red', 'Beige', 'Orange', 'Burgundy', 'Brown', 'White'].map(color => (
+                                        <div 
+                                            key={color}
+                                            onClick={() => setSelectedColor(color)}
+                                            className={`w-8 h-8 rounded-full cursor-pointer border-2 transition-all p-0.5 ${selectedColor === color ? 'border-black' : 'border-transparent'}`}
+                                        >
+                                            <div className={`w-full h-full rounded-full border border-gray-200 shadow-sm`} style={{ backgroundColor: color.toLowerCase() === 'beige' ? '#F5F5DC' : color.toLowerCase() }}></div>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                            <button 
-                                onClick={() => addToCart({...product, quantity})}
-                                className="flex-grow bg-[#C06C84] text-white h-14 px-8 font-bold tracking-widest uppercase hover:bg-black transition-all flex items-center justify-center gap-2"
-                            >
-                                <FiShoppingBag /> Add to Cart
+
+                            {/* Size Guide */}
+                            <button className="flex items-center gap-2 text-sm text-gray-500 hover:text-black transition-colors underline underline-offset-4">
+                                <FiTag className="rotate-90" size={14} /> Size Guide
                             </button>
-                            <button 
-                                onClick={() => addToWishlist(product)}
-                                className={`w-14 h-14 border border-gray-200 flex items-center justify-center transition-all ${isInWishlist ? 'text-red-500 bg-red-50' : 'hover:border-black'}`}
-                            >
-                                <FiHeart className={isInWishlist ? 'fill-current' : ''} />
-                            </button>
-                        </div>
 
-                        <button className="w-full bg-[#111111] text-white h-14 font-bold tracking-widest uppercase hover:bg-[#333333] transition-all mb-8">
-                            Buy It Now
-                        </button>
+                            {/* Quantity + Buttons Row */}
+                            <div className="flex flex-wrap items-center gap-4 pt-4">
+                                <div className="flex items-center border border-gray-200 h-12 w-32 justify-between px-2 bg-white">
+                                    <button onClick={() => handleQuantityChange(-1)} className="p-2 hover:text-[#C06C84] transition-colors"><FiMinus /></button>
+                                    <span className="font-semibold">{quantity}</span>
+                                    <button onClick={() => handleQuantityChange(1)} className="p-2 hover:text-[#C06C84] transition-colors"><FiPlus /></button>
+                                </div>
+                                <button 
+                                    onClick={() => addToCart({...product, quantity})}
+                                    className="flex-grow bg-[#C06C84] text-white h-12 px-6 font-bold tracking-widest uppercase hover:bg-black transition-all flex items-center justify-center gap-2 text-[12px]"
+                                >
+                                    Add to Cart
+                                </button>
+                                <button className="flex-grow bg-[#111111] text-white h-12 px-6 font-bold tracking-widest uppercase hover:bg-[#333333] transition-all text-[12px]">
+                                    Buy It Now
+                                </button>
+                            </div>
 
-                        {/* Badges/Info */}
-                        <div className="space-y-4 text-sm text-gray-600">
-                            <div className="flex items-center gap-3">
-                                <FiTruck className="text-[#C06C84]" /> 
-                                <span>Free shipping on all orders over $100</span>
+                            {/* Wishlist + Compare */}
+                            <div className="flex items-center gap-6 text-sm py-2">
+                                <button 
+                                    onClick={() => addToWishlist(product)}
+                                    className={`flex items-center gap-2 transition-colors ${isInWishlist ? 'text-red-500' : 'text-gray-600 hover:text-black'}`}
+                                >
+                                    <FiHeart className={isInWishlist ? 'fill-current' : ''} /> {isInWishlist ? 'In Wishlist' : 'Go To Wishlist'}
+                                </button>
+                                <button className="flex items-center gap-2 text-gray-600 hover:text-black transition-colors">
+                                    <FiRepeat /> Compare
+                                </button>
                             </div>
-                            <div className="flex items-center gap-3">
-                                <FiRotateCcw className="text-[#C06C84]" /> 
-                                <span>30 days easy returns & exchange</span>
-                            </div>
-                            <div className="flex items-center gap-3 text-green-600 font-medium">
-                                <div className="w-2 h-2 rounded-full bg-green-600"></div>
-                                <span>24 products in stock. Only 2 left in cart!</span>
-                            </div>
-                        </div>
 
-                        <div className="mt-8 pt-8 border-t border-gray-100 flex items-center gap-6">
-                            <span className="text-xs font-bold uppercase tracking-widest text-gray-400">Share:</span>
-                            <div className="flex gap-4 text-gray-400">
-                                <FiShare2 className="cursor-pointer hover:text-black transition-colors" />
-                                <span className="cursor-pointer hover:text-black transition-colors font-medium">Facebook</span>
-                                <span className="cursor-pointer hover:text-black transition-colors font-medium">Twitter</span>
-                                <span className="cursor-pointer hover:text-black transition-colors font-medium">Pinterest</span>
+                            {/* Product Meta Info */}
+                            <div className="pt-6 space-y-3 text-sm">
+                                <div className="flex gap-4">
+                                    <span className="text-gray-400 w-24">Vendor:</span>
+                                    <span className="text-gray-600">{product.brand}</span>
+                                </div>
+                                <div className="flex gap-4">
+                                    <span className="text-gray-400 w-24">Type:</span>
+                                    <span className="text-gray-600">{product.category}</span>
+                                </div>
+                                <div className="flex gap-4">
+                                    <span className="text-gray-400 w-24">SKU:</span>
+                                    <span className="text-gray-600">null</span>
+                                </div>
+                                <div className="flex gap-4">
+                                    <span className="text-gray-400 w-24">Availability:</span>
+                                    <span className="text-green-600 font-medium">Available</span>
+                                </div>
+                            </div>
+
+                            {/* Sale Timer Box */}
+                            <div className="border border-gray-300 p-4 flex items-center justify-between mt-8">
+                                <div className="flex items-center gap-2 font-bold text-[16px]">
+                                    🔥 Sale ends in !
+                                </div>
+                                <div className="flex gap-4 font-bold text-xl">
+                                    <div className="flex flex-col items-center">
+                                        <span className="leading-tight">1619</span>
+                                        <span className="text-[10px] text-gray-400 font-normal">D</span>
+                                    </div>
+                                    <span className="text-gray-300">:</span>
+                                    <div className="flex flex-col items-center">
+                                        <span className="leading-tight">22</span>
+                                        <span className="text-[10px] text-gray-400 font-normal">H</span>
+                                    </div>
+                                    <span className="text-gray-300">:</span>
+                                    <div className="flex flex-col items-center">
+                                        <span className="leading-tight">33</span>
+                                        <span className="text-[10px] text-gray-400 font-normal">M</span>
+                                    </div>
+                                    <span className="text-gray-300">:</span>
+                                    <div className="flex flex-col items-center">
+                                        <span className="leading-tight">44</span>
+                                        <span className="text-[10px] text-gray-400 font-normal">S</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Accordions */}
+                            <div className="border-t border-gray-200 mt-8">
+                                <button className="w-full flex items-center justify-between py-4 text-sm font-medium text-gray-700 hover:text-black border-b border-gray-100">
+                                    <div className="flex items-center gap-2">
+                                        <FiTruck className="text-gray-400" /> Shipping information
+                                    </div>
+                                    <FiPlus className="text-gray-400" />
+                                </button>
+                                <button className="w-full flex items-center justify-between py-4 text-sm font-medium text-gray-700 hover:text-black border-b border-gray-100">
+                                    <div className="flex items-center gap-2">
+                                        <FiRotateCcw className="text-gray-400" /> Care Guide
+                                    </div>
+                                    <FiPlus className="text-gray-400" />
+                                </button>
+                            </div>
+
+                            {/* Extra Info */}
+                            <div className="space-y-4 text-sm text-gray-600 py-6">
+                                <div className="flex items-center gap-3">
+                                    <FiTag className="text-gray-400" /> 
+                                    <span>55% Linen, 45% Rayon</span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <FiShield className="text-gray-400" /> 
+                                    <span>Secure payment</span>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <FiRotateCcw className="text-gray-400" /> 
+                                    <span>2 Year Warranty</span>
+                                </div>
+                            </div>
+
+                            {/* Bottom Section */}
+                            <div className="space-y-6 pt-4 border-t border-gray-100">
+                                <div className="flex items-center gap-3 text-sm">
+                                    <FiEye className="text-gray-400" size={18} />
+                                    <span className="text-[#C06C84] font-bold">18</span>
+                                    <span className="text-gray-600">customers are viewing this product</span>
+                                </div>
+                                <div className="flex items-center gap-3 text-sm">
+                                    <span>🔥</span>
+                                    <span className="text-gray-600 uppercase text-[11px] font-bold tracking-widest">30 SOLD IN LAST 18 HOURS</span>
+                                </div>
+
+                                {/* Free Shipping Progress */}
+                                <div className="space-y-3">
+                                    <div className="flex items-center gap-2 text-sm text-gray-600">
+                                        <FiTruck className="text-gray-400" />
+                                        <span>Spend <span className="font-bold text-black">$950.00</span> for Free Shipping</span>
+                                    </div>
+                                    <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                                        <div className="w-[15%] h-full bg-[#111111] transition-all duration-1000"></div>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-8 py-4">
+                                    <button className="flex items-center gap-2 text-sm text-gray-500 hover:text-black transition-colors font-medium">
+                                        <FiShare2 size={16} /> Share
+                                    </button>
+                                    <button className="flex items-center gap-2 text-sm text-gray-500 hover:text-black transition-colors font-medium">
+                                        <FiShare2 size={16} /> Tweet
+                                    </button>
+                                    <button className="flex items-center gap-2 text-sm text-gray-500 hover:text-black transition-colors font-medium">
+                                        <FiShare2 size={16} /> Pin it
+                                    </button>
+                                </div>
+
+                                {/* Safe Checkout */}
+                                <div className="border border-gray-100 p-6 rounded-md bg-white shadow-sm text-center">
+                                    <p className="text-sm font-bold text-gray-700 mb-6">Guarantee safe checkout</p>
+                                    <div className="flex justify-center gap-3 opacity-80 grayscale hover:grayscale-0 transition-all">
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Visa_Inc._logo.svg/2560px-Visa_Inc._logo.svg.png" className="h-6 w-auto object-contain" alt="visa" />
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Mastercard-logo.svg/1280px-Mastercard-logo.svg.png" className="h-6 w-auto object-contain" alt="mastercard" />
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/PayPal.svg/1200px-PayPal.svg.png" className="h-6 w-auto object-contain" alt="paypal" />
+                                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Google_Pay_%28GPay%29_Logo_%282018-2020%29.svg/1200px-Google_Pay_%28GPay%29_Logo_%282018-2020%29.svg.png" className="h-6 w-auto object-contain" alt="gpay" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

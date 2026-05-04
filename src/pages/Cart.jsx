@@ -7,7 +7,7 @@ export default function Cart() {
     const { cartItems, removeFromCart, updateQuantity } = useShop();
 
     const subtotal = cartItems.reduce((acc, item) => {
-        const price = parseFloat(item.price.replace('$', '')) || 0;
+        const price = parseFloat(String(item.price).replace('$', '')) || 0;
         return acc + price * item.quantity;
     }, 0);
 
@@ -97,7 +97,7 @@ export default function Cart() {
                                     {/* Total */}
                                     <div className="text-right font-medium text-[#111111]">
                                         <span className="md:hidden float-left font-bold text-xs text-gray-400 uppercase tracking-wider">Total:</span>
-                                        ${(parseFloat(item.price.replace('$', '')) * item.quantity).toFixed(2)}
+                                        ${(parseFloat(String(item.price).replace('$', '')) * item.quantity).toFixed(2)}
                                     </div>
                                 </div>
                             ))}

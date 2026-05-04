@@ -9,6 +9,10 @@ import Wishlist from './pages/Wishlist';
 import Cart from './pages/Cart';
 import Collection from './pages/Collection';
 import ProductDetails from './pages/ProductDetails';
+import Blog from './pages/Blog';
+import AboutUs from './pages/AboutUs';
+import Contact from './pages/Contact';
+import FAQ from './pages/FAQ';
 import './App.css';
 
 function App() {
@@ -21,10 +25,14 @@ function App() {
           <main className="pt-[80px] min-[1000px]:pt-[160px]">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/about" element={<AboutUs />} />
               <Route path="/wishlist" element={<Wishlist />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/products" element={<Collection />} />
               <Route path="/product/:id" element={<ProductDetails />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/faq" element={<FAQ />} />
             </Routes>
           </main>
           <Footer />

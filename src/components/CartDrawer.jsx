@@ -9,7 +9,7 @@ const CartDrawer = ({ isOpen, onClose }) => {
 
   const freeShippingThreshold = 1000;
   const totalPrice = cartItems.reduce((acc, item) => {
-    const price = parseFloat(item.price.replace('$', '')) || 0;
+    const price = parseFloat(String(item.price).replace('$', '')) || 0;
     return acc + price * item.quantity;
   }, 0);
   const remainingForFreeShipping = Math.max(0, freeShippingThreshold - totalPrice);
