@@ -1,4 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import shop1 from '../assets/shop1.webp';
+import shop2 from '../assets/shop2.webp';
+import product1 from '../assets/product5.webp';
+import blog from '../assets/blog.webp';
+
 import {
   FiSearch,
   FiUser,
@@ -28,6 +33,7 @@ const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [openMenu, setOpenMenu] = useState(null);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
 
   const toggleMenu = (menu) => {
     setOpenMenu(openMenu === menu ? null : menu);
@@ -56,9 +62,9 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
 
-  // Scroll Lock when sidebar is open
+  // Scroll Lock when sidebar or login is open
   useEffect(() => {
-    if (isSidebarOpen) {
+    if (isSidebarOpen || isLoginOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'unset';
@@ -66,7 +72,7 @@ const Header = () => {
     return () => {
       document.body.style.overflow = 'unset';
     };
-  }, [isSidebarOpen]);
+  }, [isSidebarOpen, isLoginOpen]);
 
   return (
     <>
@@ -76,6 +82,39 @@ const Header = () => {
           }`}
         onClick={() => setIsSidebarOpen(false)}
       />
+
+      {/* Login Modal */}
+      {isLoginOpen && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+          <div 
+            className="absolute inset-0 bg-black/60 transition-opacity duration-300"
+            onClick={() => setIsLoginOpen(false)}
+          />
+          <div className="relative bg-white w-full max-w-[500px] p-8 md:p-14 shadow-2xl rounded-sm">
+            <button 
+              onClick={() => setIsLoginOpen(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-black transition-colors"
+            >
+              <FiX size={24} />
+            </button>
+            <div className="text-center mb-10">
+              <h2 className="text-4xl font-semibold text-[#111111] mb-4">Login</h2>
+              <p className="text-gray-500">Please enter your e-mail and password:</p>
+            </div>
+            <form className="space-y-6">
+              <input type="email" placeholder="Email" className="w-full border border-gray-100 px-4 py-4 focus:border-black outline-none placeholder:text-gray-400" />
+              <div className="space-y-4">
+                <input type="password" placeholder="Password" className="w-full border border-gray-100 px-4 py-4 focus:border-black outline-none placeholder:text-gray-400" />
+                <div className="text-right">
+                  <a href="#" className="text-sm text-gray-400 hover:text-black transition-colors underline underline-offset-4 decoration-gray-200">Forgot your password?</a>
+                </div>
+              </div>
+              <button type="button" className="w-full bg-[#b92f56] text-white py-4 font-bold tracking-widest uppercase hover:bg-black transition-all duration-300 mt-4">LOGIN</button>
+              <div className="text-center pt-6 text-gray-500">New customer? <a href="https://shopify.com/71465173218/account?locale=en&region_country=AU&buyer_flags=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJxeC1zaG9vei5teXNob3BpZnkuY29tIiwiZmxhZ3MiOltdLCJleHAiOjE3Nzg1MTc4NjYsIm5iZiI6MTc3NzkxMzA2Nn0.l0w38U8J48EoINmhEYhtIMX8B86siqT6jTSHg7J7Qoc" className="text-gray-400 hover:text-black transition-colors underline underline-offset-4 decoration-gray-200 ml-1">Register</a></div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* 2. Sidebar Menu (Mobile) */}
       <div
@@ -88,103 +127,113 @@ const Header = () => {
             <img src={logoIcon} alt="Logo" className="h-6 w-auto object-contain" />
             <button
               onClick={() => setIsSidebarOpen(false)}
-              className="text-2xl text-gray-800 hover:text-[#C06C84] transition-colors"
+              className="text-2xl text-gray-800 hover:text-[#C06C84] transition-colors cursor-pointer"
             >
               <FiX />
             </button>
           </div>
 
           {/* Sidebar Links */}
-          <div className="flex-1 overflow-y-auto py-6 px-6">
-            <ul className="flex flex-col gap-4 text-[16px] text-[#111111]">
-              <li className="text-[#C06C84] flex justify-between items-center py-3 border-b border-gray-200">Home</li>
+          <div className="flex-1 overflow-y-auto py-6 px-6 no-scrollbar">
+            <ul className="flex flex-col gap-4 text-[16px] text-[#111111] cursor-pointer">
+              <li className="text-[#C06C84] flex justify-between items-center py-3 border-b border-gray-200" onClick={() => { navigate('/'); setIsSidebarOpen(false); }}>Home</li>
+              
               {/* SHOP */}
               <li className="border-b border-gray-200">
                 <div
                   onClick={() => toggleMenu("shop")}
-                  className="flex justify-between items-center py-2 cursor-pointer hover:text-[#C06C84]"
+                  className="flex justify-between items-center py-2 cursor-pointer hover:text-[#C06C84] transition-colors"
                 >
                   Shop
                   <FiChevronDown
-                    className={`transition-transform ${openMenu === "shop" ? "rotate-180" : ""
+                    className={`transition-transform duration-300 ${openMenu === "shop" ? "rotate-180 text-[#C06C84]" : ""
                       }`}
                   />
                 </div>
 
-                {openMenu === "shop" && (
-                  <ul className="pl-4 pb-2 text-sm text-gray-600">
-                    <li className="py-1">Layouts</li>
-                    <li className="py-1">Features</li>
-                    <li className="py-1">Hover style</li>
-                  </ul>
-                )}
+                <div className={`grid transition-all duration-300 ease-in-out ${openMenu === "shop" ? "grid-rows-[1fr] opacity-100 mb-4" : "grid-rows-[0fr] opacity-0"}`}>
+                  <div className="overflow-hidden">
+                    <ul className="pl-6 pb-2 gap-y-2 flex flex-col text-sm text-gray-600 cursor-pointer">
+                      <li className="py-1 hover:text-[#C06C84] transition-colors" onClick={() => { navigate('/products'); setIsSidebarOpen(false); }}>Layouts</li>
+                      <li className="py-1 hover:text-[#C06C84] transition-colors" onClick={() => { navigate('/products'); setIsSidebarOpen(false); }}>Features</li>
+                      <li className="py-1 hover:text-[#C06C84] transition-colors" onClick={() => { navigate('/products'); setIsSidebarOpen(false); }}>Hover style</li>
+                    </ul>
+                  </div>
+                </div>
               </li>
 
               {/* PRODUCT */}
               <li className="border-b border-gray-200">
                 <div
                   onClick={() => toggleMenu("product")}
-                  className="flex justify-between items-center py-2 cursor-pointer hover:text-[#C06C84]"
+                  className="flex justify-between items-center py-2 cursor-pointer hover:text-[#C06C84] transition-colors"
                 >
-                  Product <FiChevronDown
-                    className={`transition-transform ${openMenu === "product" ? "rotate-180" : ""
+                  Product 
+                  <FiChevronDown
+                    className={`transition-transform duration-300 ${openMenu === "product" ? "rotate-180 text-[#C06C84]" : ""
                       }`}
                   />
                 </div>
 
-                {openMenu === "product" && (
-                  <ul className="pl-4 pb-2 text-sm text-gray-600">
-                    <li className="py-1">Product Layout</li>
-                    <li className="py-1">Product Hover </li>
-                    <li className="py-1">Product Feature</li>
-                  </ul>
-                )}
+                <div className={`grid transition-all duration-300 ease-in-out ${openMenu === "product" ? "grid-rows-[1fr] opacity-100 mb-4" : "grid-rows-[0fr] opacity-0"}`}>
+                  <div className="overflow-hidden">
+                    <ul className="pl-6 pb-2 gap-y-2 flex flex-col text-sm text-gray-600 cursor-pointer">
+                      <li className="py-1 hover:text-[#C06C84] transition-colors" onClick={() => { navigate('/products'); setIsSidebarOpen(false); }}>Product Layout</li>
+                      <li className="py-1 hover:text-[#C06C84] transition-colors" onClick={() => { navigate('/products'); setIsSidebarOpen(false); }}>Product Hover </li>
+                      <li className="py-1 hover:text-[#C06C84] transition-colors" onClick={() => { navigate('/products'); setIsSidebarOpen(false); }}>Product Feature</li>
+                    </ul>
+                  </div>
+                </div>
               </li>
 
               {/* BLOG */}
               <li className="border-b border-gray-200">
                 <div
-                  onClick={() => { navigate('/blog'); setIsSidebarOpen(false); }}
-                  className="flex justify-between items-center py-2 cursor-pointer hover:text-[#C06C84]"
+                  onClick={() => toggleMenu("blog")}
+                  className="flex justify-between items-center py-2 cursor-pointer hover:text-[#C06C84] transition-colors"
                 >
-                  Blog <FiChevronDown
-                    className={`transition-transform ${openMenu === "blog" ? "rotate-180" : ""
+                  Blog 
+                  <FiChevronDown
+                    className={`transition-transform duration-300 ${openMenu === "blog" ? "rotate-180 text-[#C06C84]" : ""
                       }`}
                   />
                 </div>
 
-                {openMenu === "blog" && (
-                  <ul className="pl-4 pb-2 text-sm text-gray-600">
-                    <li className="py-1">List Layouts</li>
-                    <li className="py-1">List Features</li>
-                    <li className="py-1">Articles</li>
-                  </ul>
-                )}
+                <div className={`grid transition-all duration-300 ease-in-out ${openMenu === "blog" ? "grid-rows-[1fr] opacity-100 mb-4" : "grid-rows-[0fr] opacity-0"}`}>
+                  <div className="overflow-hidden">
+                    <ul className="pl-6 pb-2 gap-y-2 flex flex-col text-sm text-gray-600 cursor-pointer">
+                      <li className="py-1 hover:text-[#C06C84] transition-colors" onClick={() => { navigate('/products'); setIsSidebarOpen(false); }}>List Layouts</li>
+                      <li className="py-1 hover:text-[#C06C84] transition-colors" onClick={() => { navigate('/products'); setIsSidebarOpen(false); }}>List Features</li>
+                      <li className="py-1 hover:text-[#C06C84] transition-colors" onClick={() => { navigate('/products'); setIsSidebarOpen(false); }}>Articles</li>
+                    </ul>
+                  </div>
+                </div>
               </li>
 
               {/* PAGES */}
               <li className="border-b border-gray-200">
                 <div
                   onClick={() => toggleMenu("pages")}
-                  className="flex justify-between items-center py-2 cursor-pointer hover:text-[#C06C84]"
+                  className="flex justify-between items-center py-2 cursor-pointer hover:text-[#C06C84] transition-colors"
                 >
-                  Pages <FiChevronDown
-                    className={`transition-transform ${openMenu === "pages" ? "rotate-180" : ""
+                  Pages 
+                  <FiChevronDown
+                    className={`transition-transform duration-300 ${openMenu === "pages" ? "rotate-180 text-[#C06C84]" : ""
                       }`}
                   />
                 </div>
 
-                {openMenu === "pages" && (
-                  <ul className="pl-4 pb-2 text-sm text-gray-600">
-                    <li className="py-1 hover:text-[#C06C84] cursor-pointer" onClick={() => { navigate('/about'); setIsSidebarOpen(false); }}>About us</li>
-                    <li className="py-1">Contact</li>
-                    <li className="py-1">FAQ</li>
-                    <li className="py-1">LookBook</li>
-                    <li className="py-1">Size Guide</li>
-                    <li className="py-1 hover:text-[#C06C84] cursor-pointer" onClick={() => { navigate('/wishlist'); setIsSidebarOpen(false); }}>Wishlist</li>
-                    <li className="py-1 hover:text-[#C06C84] cursor-pointer" onClick={() => { navigate('/cart'); setIsSidebarOpen(false); }}>Cart</li>
-                  </ul>
-                )}
+                <div className={`grid transition-all duration-300 ease-in-out ${openMenu === "pages" ? "grid-rows-[1fr] opacity-100 mb-4" : "grid-rows-[0fr] opacity-0"}`}>
+                  <div className="overflow-hidden">
+                    <ul className="pl-6 pb-2 gap-y-2 flex flex-col text-sm text-gray-600 cursor-pointer">
+                      <li className="py-1 hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => { navigate('/about'); setIsSidebarOpen(false); }}>About us</li>
+                      <li className="py-1 hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => { navigate('/contact'); setIsSidebarOpen(false); }}>Contact</li>
+                      <li className="py-1 hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => { navigate('/faq'); setIsSidebarOpen(false); }}>FAQ</li>
+                      <li className="py-1 hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => { navigate('/wishlist'); setIsSidebarOpen(false); }}>Wishlist</li>
+                      <li className="py-1 hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => { navigate('/cart'); setIsSidebarOpen(false); }}>Cart</li>
+                    </ul>
+                  </div>
+                </div>
               </li>
               <li className="relative inline-block w-fit hover:text-[#C06C84] cursor-pointer py-2 border-b border-gray-200">
                 Buy Now
@@ -230,7 +279,7 @@ const Header = () => {
             <div className="font-medium">One Day Delivery Available</div>
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-1 cursor-pointer hover:text-black transition-colors">
-                <span>Login / Register</span>
+                <span onClick={() => setIsLoginOpen(true)}>Login</span> / <span><a href="https://shopify.com/71465173218/account?locale=en&region_country=AU&buyer_flags=eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJxeC1zaG9vei5teXNob3BpZnkuY29tIiwiZmxhZ3MiOltdLCJleHAiOjE3Nzg1MTc4NjYsIm5iZiI6MTc3NzkxMzA2Nn0.l0w38U8J48EoINmhEYhtIMX8B86siqT6jTSHg7J7Qoc">Register</a></span>
               </div>
               <div className="flex items-center gap-4">
                 <FaFacebookF className="cursor-pointer hover:text-black transition-colors" />
@@ -244,7 +293,7 @@ const Header = () => {
         {/* Main Header Section */}
         <nav className={`w-full border-b border-gray-100 transition-all duration-300 relative ${isScrolled
           ? 'h-14 min-[1000px]:h-16'
-          : 'h-16 min-[1000px]:h-22'
+          : 'h-16 min-[1000px]:h-24'
           }`}>
           <div className="max-w-[1400px] mx-auto w-full h-full px-4 min-[1000px]:px-10 flex items-center">
             {/* Mobile: Hamburger Menu (Left) */}
@@ -280,52 +329,65 @@ const Header = () => {
                 <div className="flex items-center gap-1 cursor-pointer hover:text-[#C06C84] transition-colors" onClick={() => navigate('/products')}>
                   Shop <FiChevronDown className="text-xs group-hover:rotate-180 transition-transform" />
                 </div>
-                <div className="absolute left-0 w-screen bg-white shadow-xl opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 z-50 border-t border-gray-100 top-full">
-                  <div className="max-w-[1400px] mx-auto px-10 py-12 grid grid-cols-4 gap-10">
-                    <div>
-                      <h3 className="font-semibold mb-4 text-[#C06C84]">Men</h3>
-                      <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Sneakers</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Boots</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Formal</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>View All</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Collections</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>New Arrivals</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Best Sellers</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Coming Soon</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Sales & Offers</li>
+                <div className="absolute left-1/2 -translate-x-1/2 top-full w-screen bg-white shadow-lg z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out border-t border-gray-50">
+                  <div className="max-w-7xl mx-auto px-16 py-10 grid grid-cols-5 gap-12">
+                    <div className="opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out delay-100">
+                      <h3 className="font-semibold mb-6 text-[#C06C84] text-lg">Men</h3>
+                      <ul className="space-y-3 text-sm text-gray-600">
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Sneakers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Boots</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Formal</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>View All</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Collections</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>New Arrivals</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Best Sellers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Coming Soon</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Sales & Offers</li>
                       </ul>
                     </div>
-                    <div>
-                      <h3 className="font-semibold mb-4 text-[#C06C84]">Women</h3>
-                      <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Heels</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Flats</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Sneakers</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>View All</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Collections</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>New Arrivals</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Best Sellers</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Coming Soon</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Sales & Offers</li>
+                    <div className="opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out delay-200">
+                      <h3 className="font-semibold mb-6 text-[#C06C84] text-lg">Women</h3>
+                      <ul className="space-y-3 text-sm text-gray-600">
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Heels</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Flats</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Sneakers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>View All</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Collections</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>New Arrivals</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Best Sellers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Coming Soon</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Sales & Offers</li>
                       </ul>
                     </div>
-                    <div>
-                      <h3 className="font-semibold mb-4 text-[#C06C84]">Kids</h3>
-                      <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>School Shoes</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Casual</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Sports</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>View All</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Collections</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>New Arrivals</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Best Sellers</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Coming Soon</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Sales & Offers</li>
+                    <div className="opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out delay-300">
+                      <h3 className="font-semibold mb-6 text-[#C06C84] text-lg">Kids</h3>
+                      <ul className="space-y-3 text-sm text-gray-600">
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>School Shoes</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Casual</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Sports</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>View All</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Collections</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>New Arrivals</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Best Sellers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Coming Soon</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Sales & Offers</li>
                       </ul>
                     </div>
-                    <div>
-                      <img src="/images/shop1.webp" alt="menu" className="rounded-lg object-cover w-full h-[150px] shadow-md" />
+                    <div className="opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out delay-[400ms]">
+                      <div className="relative overflow-hidden shadow-lg group/img">
+                        <img src={shop1} alt="menu" className="object-cover w-full h-[200px] transform group-hover/img:scale-110 transition-transform duration-700" />
+                        <div className="absolute inset-0 bg-black/20 group-hover/img:bg-black/40 transition-colors duration-300 flex items-center justify-center" onClick={() => navigate('/products')} >
+                          <button className="bg-white text-black px-6 py-2 font-bold text-sm tracking-widest opacity-0 translate-y-4 group-hover/img:opacity-100 group-hover/img:translate-y-0 transition-all duration-300">SHOP NOW</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out delay-[500ms]">
+                      <div className="relative overflow-hidden shadow-lg group/img">
+                        <img src={shop2} alt="menu" className="object-cover w-full h-[200px] transform group-hover/img:scale-110 transition-transform duration-700" />
+                        <div className="absolute inset-0 bg-black/20 group-hover/img:bg-black/40 transition-colors duration-300 flex items-center justify-center" onClick={() => navigate('/products')}>
+                          <button className="bg-white text-black px-6 py-2 font-bold text-sm tracking-widest opacity-0 translate-y-4 group-hover/img:opacity-100 group-hover/img:translate-y-0 transition-all duration-300">SHOP NOW</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -336,108 +398,95 @@ const Header = () => {
                 <div className="flex items-center gap-1 cursor-pointer hover:text-[#C06C84] transition-colors" onClick={() => navigate('/products')}>
                   Product <FiChevronDown className="text-xs group-hover:rotate-180 transition-transform" />
                 </div>
-                <div className="absolute left-0 w-screen bg-white shadow-xl opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 z-50 border-t border-gray-100 top-full">
-                  <div className="max-w-[1400px] mx-auto px-10 py-12 grid grid-cols-4 gap-10">
-                    <div>
-                      <h3 className="font-semibold mb-4">Collections</h3>
-                      <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>New Arrivals</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Best Sellers</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Trending</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>View All</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Collections</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>New Arrivals</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Best Sellers</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Coming Soon</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Sales & Offers</li>
+                <div className="absolute left-1/2 -translate-x-1/2 top-full w-screen bg-white shadow-lg z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out border-t border-gray-50">
+                  <div className="max-w-7xl mx-auto px-16 py-10 grid grid-cols-4 gap-12">
+                    <div className="opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out delay-100">
+                      <h3 className="font-semibold mb-6 text-lg">Collections</h3>
+                      <ul className="space-y-3 text-sm text-gray-600">
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>New Arrivals</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Best Sellers</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Trending</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>View All</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Collections</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Coming Soon</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Sales & Offers</li>
                       </ul>
                     </div>
-                    <div>
-                      <h3 className="font-semibold mb-4">Types</h3>
-                      <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Running</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Casual</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Luxury</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>View All</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Collections</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>New Arrivals</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Best Sellers</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Coming Soon</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Sales & Offers</li>
+                    <div className="opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out delay-200">
+                      <h3 className="font-semibold mb-6 text-lg">Types</h3>
+                      <ul className="space-y-3 text-sm text-gray-600">
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Running</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Casual</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Luxury</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>View All</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Collections</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>New Arrivals</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Best Sellers</li>
                       </ul>
                     </div>
-                    <div>
-                      <h3 className="font-semibold mb-4">Brands</h3>
-                      <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Nike</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Adidas</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Puma</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>View All</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Collections</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>New Arrivals</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Best Sellers</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Coming Soon</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/products')}>Sales & Offers</li>
+                    <div className="opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out delay-300">
+                      <h3 className="font-semibold mb-6 text-lg">Brands</h3>
+                      <ul className="space-y-3 text-sm text-gray-600">
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Nike</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Adidas</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Puma</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>View All</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/products')}>Collections</li>
                       </ul>
                     </div>
-                    <div>
-                      <img src="/images/header-product.webp" className="rounded-lg h-[150px] object-cover w-full shadow-md" />
+                    <div className="opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out delay-[400ms]">
+                      <div className="relative overflow-hidden group/img">
+                        <img src={product1} alt="product" className="object-cover w-full h-[200px] transform group-hover/img:scale-110 transition-transform duration-700" />
+                        <div className="absolute inset-0 bg-black/20 group-hover/img:bg-black/40 transition-colors duration-300 flex items-center justify-center">
+                          <button className="bg-white text-black px-6 py-2 font-bold text-sm tracking-widest opacity-0 translate-y-4 group-hover/img:opacity-100 group-hover/img:translate-y-0 transition-all duration-300">VIEW PRODUCTS</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </li>
 
               {/* Blog Mega Menu */}
-               <li className="static group">
+              <li className="static group">
                 <div className="flex items-center gap-1 cursor-pointer hover:text-[#C06C84] transition-colors" onClick={() => navigate('/blog')}>
                   Blog <FiChevronDown className="text-xs group-hover:rotate-180 transition-transform" />
                 </div>
-                <div className="absolute left-0 w-screen bg-white shadow-xl opacity-0 invisible -translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300 z-50 border-t border-gray-100 top-full">
-                  <div className="max-w-[1400px] mx-auto px-10 py-12 grid grid-cols-4 gap-10">
-                    <div>
-                      <h3 className="font-semibold mb-4">Collections</h3>
-                      <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>New Arrivals</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Best Sellers</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Trending</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>View All</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Collections</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>New Arrivals</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Best Sellers</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Coming Soon</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Sales & Offers</li>
+                <div className="absolute left-1/2 -translate-x-1/2 top-full w-screen bg-white shadow-lg z-50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 ease-out border-t border-gray-50">
+                  <div className="max-w-7xl mx-auto px-6 md:px-14 lg:px-24 xl:px-32 py-10 grid grid-cols-4 gap-12">
+                    <div className="opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out delay-100">
+                      <h3 className="font-semibold mb-6 text-lg">Featured Posts</h3>
+                      <ul className="space-y-3 text-sm text-gray-600">
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/blog')}>Trend Report 2024</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/blog')}>Sneaker Care Guide</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/blog')}>Athletic Performance</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/blog')}>Street Style Inspiration</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/blog')}>Sustainable Footwear</li>
                       </ul>
                     </div>
-                    <div>
-                      <h3 className="font-semibold mb-4">Types</h3>
-                      <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Running</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Casual</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Luxury</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>View All</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Collections</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>New Arrivals</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Best Sellers</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Coming Soon</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Sales & Offers</li>
+                    <div className="opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out delay-200">
+                      <h3 className="font-semibold mb-6 text-lg">Categories</h3>
+                      <ul className="space-y-3 text-sm text-gray-600">
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/blog')}>Fashion News</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/blog')}>Tips & Tricks</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/blog')}>Expert Reviews</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/blog')}>Community Stories</li>
                       </ul>
                     </div>
-                    <div>
-                      <h3 className="font-semibold mb-4">Brands</h3>
-                      <ul className="space-y-2 text-sm text-gray-600">
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Nike</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Adidas</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Puma</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>View All</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Collections</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>New Arrivals</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Best Sellers</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Coming Soon</li>
-                        <li className="hover:text-[#C06C84] cursor-pointer" onClick={() => navigate('/blog')}>Sales & Offers</li>
+                    <div className="opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out delay-300">
+                      <h3 className="font-semibold mb-6 text-lg">Archive</h3>
+                      <ul className="space-y-3 text-sm text-gray-600">
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/blog')}>Summer 2023</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/blog')}>Winter Essentials</li>
+                        <li className="hover:text-[#C06C84] cursor-pointer transition-colors" onClick={() => navigate('/blog')}>Tech Innovations</li>
                       </ul>
                     </div>
-                    <div>
-                      <img src="/images/header-product.webp" className="rounded-lg h-[150px] object-cover w-full shadow-md cursor-pointer" onClick={() => navigate('/blog')} />
+                    <div className="opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 ease-out delay-[400ms]">
+                      <div className="relative overflow-hidden shadow-lg group/img">
+                        <img src={blog} alt="blog" className="object-cover w-full h-[250px] transform group-hover/img:scale-110 transition-transform duration-700" />
+                        <div className="absolute inset-0 bg-black/20 group-hover/img:bg-black/40 transition-colors duration-300 flex items-center justify-center" onClick={() => navigate('/blog')}>
+                          <button className="bg-white text-black px-6 py-2 font-bold text-sm tracking-widest opacity-0 translate-y-4 group-hover/img:opacity-100 group-hover/img:translate-y-0 transition-all duration-300">READ BLOG</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -458,7 +507,7 @@ const Header = () => {
               </li>
 
               <li className="relative cursor-pointer hover:text-[#C06C84] transition-colors group">
-                <span className="absolute -top-5 right-0 bg-[#27D059] text-white text-[10px] px-1.5 py-0.5 rounded-full font-bold">Sale</span>
+                <span className="absolute -top-5 right-0 bg-[#27D059] text-white text-[10px] px-1.5 py-0.5 rounded-full">Sale</span>
                 Buy Now
               </li>
             </ul>
@@ -469,7 +518,10 @@ const Header = () => {
                 onClick={() => setSearchOpen(true)}
                 className="cursor-pointer hover:text-[#C06C84] transition-colors"
               />
-              <FiUser className="cursor-pointer hover:text-[#C06C84] transition-colors hidden min-[1000px]:block" />
+              <FiUser 
+                onClick={() => setIsLoginOpen(true)}
+                className="cursor-pointer hover:text-[#C06C84] transition-colors hidden min-[1000px]:block" 
+              />
               <div className="relative cursor-pointer group" onClick={() => navigate('/wishlist')}>
                 <FiHeart className="group-hover:text-[#C06C84] transition-colors" />
                 <span className="absolute -top-2 -right-2 bg-[#C06C84] text-white text-[10px] w-4 h-4 flex items-center justify-center rounded-full font-bold">{wishlistCount}</span>

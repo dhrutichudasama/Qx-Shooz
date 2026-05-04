@@ -3,8 +3,8 @@ import HeroSlider from '../components/HeroSlider';
 import CategorySection from '../components/CategorySection';
 import ProductSlider from '../components/ProductSlider';
 import CollectionSection from '../components/CollectionSection';
-import BannerSection from '../components/section6';
-import ProductsSection from '../components/section7';
+import BannerSection from '../components/Section6';
+import ProductsSection from '../components/Section7';
 
 export default function Home() {
     return (

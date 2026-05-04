@@ -5,7 +5,7 @@ import { useShop } from '../context/ShopContext';
 import { FiHeart, FiShoppingBag, FiMinus, FiPlus, FiChevronRight, FiChevronLeft, FiShare2, FiTruck, FiRotateCcw, FiShield, FiTag, FiChevronDown, FiPlusCircle, FiMinusCircle, FiRepeat, FiEye } from 'react-icons/fi';
 import ProductCard from '../components/ProductCard';
 import wideBanner from '../assets/wide-banner.webp';
-import banner1 from '../assets/banner-1.webp';
+import banner1 from '../assets/five-col-banner-5.webp';
 import banner2 from '../assets/banner-2.webp';
 import banner3 from '../assets/banner-3.webp';
 
@@ -323,13 +323,12 @@ export default function ProductDetails() {
             </section>
 
             {/* Chic Styles Banner */}
-            <section className="relative h-[600px] w-full overflow-hidden flex items-center px-6 md:px-20">
-                <img src={banner1} className="absolute inset-0 w-full h-full object-cover" alt="banner" />
-                <div className="relative z-10 max-w-xl text-white">
+            <section className="relative h-[500px] w-full overflow-hidden flex items-center px-6 md:px-20">
+                <img src={banner3} className="absolute inset-0 w-full h-full object-cover" alt="banner" />
+                <div className="relative z-10 text-white text-center">
                     <p className="text-xs uppercase tracking-widest mb-4 font-medium opacity-80 underline underline-offset-8">THE TRENDY FOOTWEAR STYLE</p>
-                    <h2 className="text-5xl md:text-7xl font-semibold leading-tight mb-8">Chic Styles For The Modern Woman</h2>
+                    <h2 className="text-3xl md:text-4xl font-semibold leading-tight mb-8">Chic Styles For The Modern Woman</h2>
                     <p className="mb-10 text-lg opacity-90 leading-relaxed">Discover a world of elegance and comfort with our curated collection of footwear designed for every occasion.</p>
-                    <button className="bg-white text-black px-10 py-4 font-bold uppercase tracking-widest hover:bg-black hover:text-white transition-all">Shop Collection</button>
                 </div>
             </section>
 
@@ -369,7 +368,7 @@ export default function ProductDetails() {
 
             {/* For the Explorers Banner */}
             <section className="relative h-[500px] w-full overflow-hidden flex flex-col items-center justify-center text-center px-6">
-                <img src={banner3} className="absolute inset-0 w-full h-full object-cover" alt="explorers" />
+                <img src={banner1} className="absolute inset-0 w-full h-full object-cover" alt="explorers" />
                 <div className="absolute inset-0 bg-black/40"></div>
                 <div className="relative z-10 text-white">
                     <p className="text-xs uppercase tracking-widest mb-4 font-medium opacity-80">BUILT FOR EVERY TERRAIN</p>
