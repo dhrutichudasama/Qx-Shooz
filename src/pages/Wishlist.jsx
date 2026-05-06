@@ -59,14 +59,6 @@ export default function Wishlist() {
                                     >
                                         Remove
                                     </button>
-                                    
-                                    <button
-                                        onClick={() => moveToCart(item)}
-                                        className="text-[10px] font-bold tracking-[1px] text-[#111111] hover:text-[#C06C84] transition-colors uppercase flex items-center gap-2 mt-1"
-                                    >
-                                        <FiShoppingCart size={14} />
-                                        Move to Cart
-                                    </button>
                                 </div>
                             </div>
                         </div>

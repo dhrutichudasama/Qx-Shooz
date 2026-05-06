@@ -18,14 +18,16 @@ import {
   FaTwitter,
   FaInstagram
 } from 'react-icons/fa';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import logoIcon from '../assets/logo.webp';
 import CartDrawer from './CartDrawer';
 import { useShop } from '../context/ShopContext';
+import { products } from '../data/products';
 
 const Header = () => {
   const { wishlistCount, cartCount } = useShop();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -34,10 +36,20 @@ const Header = () => {
   const [openMenu, setOpenMenu] = useState(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
 
   const toggleMenu = (menu) => {
     setOpenMenu(openMenu === menu ? null : menu);
   };
+
+  // Close menus on route change
+  useEffect(() => {
+    setOpenMenu(null);
+    setIsSidebarOpen(false);
+    setSearchOpen(false);
+    setIsLoginOpen(false);
+  }, [pathname]);
 
   // Scroll visibility and state
   useEffect(() => {
@@ -61,6 +73,36 @@ const Header = () => {
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, [lastScrollY]);
+
+  // Search Logic
+  useEffect(() => {
+    if (searchQuery.trim() === '') {
+      setSuggestions([]);
+      return;
+    }
+
+    const delayDebounceFn = setTimeout(() => {
+      const filtered = products.filter(product =>
+        product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.brand.toLowerCase().includes(searchQuery.toLowerCase())
+      ).slice(0, 6); // Limit suggestions to 6
+      setSuggestions(filtered);
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery]);
+
+  const handleSearchClose = () => {
+    setSearchOpen(false);
+    setSearchQuery('');
+    setSuggestions([]);
+  };
+
+  const handleSuggestionClick = (productId) => {
+    navigate(`/product/${productId}`);
+    handleSearchClose();
+  };
 
   // Scroll Lock when sidebar or login is open
   useEffect(() => {
@@ -544,29 +586,64 @@ const Header = () => {
       <div
         className={`fixed inset-0 bg-black/50 z-[9998] transition-opacity duration-300 ${searchOpen ? "opacity-100 visible" : "opacity-0 invisible"
           }`}
-        onClick={() => setSearchOpen(false)}
+        onClick={handleSearchClose}
       ></div>
 
       {/* Search Bar */}
       <div
-        className={`fixed top-0 left-0 w-full h-[100px] bg-white z-[9999] shadow-md transform transition-transform duration-300 ${searchOpen ? "translate-y-0" : "-translate-y-full"
+        className={`fixed top-0 left-0 w-full bg-white z-[9999] shadow-md transform transition-transform duration-300 ${searchOpen ? "translate-y-0" : "-translate-y-full"
           }`}
       >
-        <div className="flex items-center justify-between px-60 py-10 h-full">
+        <div className="max-w-4xl mx-auto px-6 py-10 relative">
+          <div className="flex items-center justify-between border-b border-[#919191] pb-2">
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="w-full outline-none text-[20px] md:text-[24px]"
+              autoFocus={searchOpen}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button
+              onClick={handleSearchClose}
+              className="text-3xl ml-4 hover:text-[#C06C84] transition-colors"
+            >
+              <FiX />
+            </button>
+          </div>
 
-          <input
-            type="text"
-            placeholder="Search products..."
-            className="w-full outline-none text-[24px] border-b border-[#919191]"
-            autoFocus
-          />
-
-          <button
-            onClick={() => setSearchOpen(false)}
-            className="text-3xl ml-4"
-          >
-            ✕
-          </button>
+          {/* Suggestions Dropdown */}
+          {(suggestions.length > 0 || (searchQuery.trim() !== '' && suggestions.length === 0)) && (
+            <div className="absolute left-0 right-0 top-full bg-white shadow-xl max-h-[400px] overflow-y-auto rounded-b-lg border-t border-gray-100">
+              {suggestions.length > 0 ? (
+                <div className="p-4">
+                  <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-4 px-4">Suggestions</h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {suggestions.map((product) => (
+                      <div 
+                        key={product.id}
+                        onClick={() => handleSuggestionClick(product.id)}
+                        className="flex items-center gap-4 p-3 hover:bg-gray-50 cursor-pointer rounded-md transition-colors group"
+                      >
+                        <div className="w-14 h-14 bg-gray-50 rounded overflow-hidden flex-shrink-0">
+                          <img src={product.image} alt={product.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h5 className="text-sm font-medium text-[#111111] truncate group-hover:text-[#C06C84] transition-colors">{product.title}</h5>
+                          <p className="text-xs text-gray-500">{product.brand}</p>
+                          <p className="text-xs font-bold text-[#C06C84] mt-1">${product.price.toFixed(2)}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="p-10 text-center text-gray-400 italic">
+                  No results found for "{searchQuery}"
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </>

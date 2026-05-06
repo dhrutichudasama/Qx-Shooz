@@ -61,7 +61,7 @@ const Footer = () => {
                             className="flex justify-between items-center cursor-pointer lg:cursor-default"
                             onClick={() => toggleSection('info')}
                         >
-                            <h4 className="text-[15px] font-semibold uppercase tracking-[0.1em] mb-0 lg:mb-8 text-[#1a1a1a]">
+                            <h4 className="text-[15px] font-semibold  tracking-[0.1em] mb-0 lg:mb-8 text-[#1a1a1a]">
                                 INFORMATION
                             </h4>
                             <span className={`lg:hidden text-2xl transition-transform duration-300 ${openSection === 'info' ? 'rotate-180' : ''}`}>
@@ -69,7 +69,7 @@ const Footer = () => {
                             </span>
                         </div>
                         <div className={`overflow-hidden transition-all duration-300 ease-in-out ${openSection === 'info' ? 'max-h-60 opacity-100 mt-4' : 'max-h-0 lg:max-h-none opacity-0 lg:opacity-100'}`}>
-                            <ul className="space-y-3 flex flex-col items-start lg:items-center">
+                            <ul className="space-y-3 flex flex-col items-start">
                                 {informationLinks.map((link) => (
                                     <li key={link.name}>
                                         <Link to={link.path} className="text-gray-500 hover:text-[#A14D4D] transition-all duration-300 text-[15px] hover:translate-x-1 inline-block">
@@ -87,7 +87,7 @@ const Footer = () => {
                             className="flex justify-between items-center cursor-pointer lg:cursor-default"
                             onClick={() => toggleSection('quick')}
                         >
-                            <h4 className="text-[15px] font-semibold uppercase tracking-[0.1em] mb-0 lg:mb-8 text-[#1a1a1a]">
+                            <h4 className="text-[15px] font-semibold  tracking-[0.1em] mb-0 lg:mb-8 text-[#1a1a1a]">
                                 QUICK LINKS
                             </h4>
                             <span className={`lg:hidden text-2xl transition-transform duration-300 ${openSection === 'quick' ? 'rotate-180' : ''}`}>
@@ -95,7 +95,7 @@ const Footer = () => {
                             </span>
                         </div>
                         <div className={`overflow-hidden transition-all duration-300 ease-in-out ${openSection === 'quick' ? 'max-h-60 opacity-100 mt-4' : 'max-h-0 lg:max-h-none opacity-0 lg:opacity-100'}`}>
-                            <ul className="space-y-3 flex flex-col items-start lg:items-center">
+                            <ul className="space-y-3 flex flex-col items-start">
                                 {quickLinks.map((link) => (
                                     <li key={link.name}>
                                         <Link to={link.path} className="text-gray-500 hover:text-[#A14D4D] transition-all duration-300 text-[15px] hover:translate-x-1 inline-block">
@@ -126,7 +126,7 @@ const Footer = () => {
                             className="flex justify-between items-center cursor-pointer lg:cursor-default"
                             onClick={() => toggleSection('categories')}
                         >
-                            <h4 className="text-[15px] font-semibold uppercase tracking-[0.1em] mb-0 lg:mb-8 text-[#1a1a1a]">
+                            <h4 className="text-[15px] font-semibold  tracking-[0.1em] mb-0 lg:mb-8 text-[#1a1a1a]">
                                 CATEGORIES
                             </h4>
                             <span className={`lg:hidden text-2xl transition-transform duration-300 ${openSection === 'categories' ? 'rotate-180' : ''}`}>
@@ -134,7 +134,7 @@ const Footer = () => {
                             </span>
                         </div>
                         <div className={`overflow-hidden transition-all duration-300 ease-in-out ${openSection === 'categories' ? 'max-h-60 opacity-100 mt-4' : 'max-h-0 lg:max-h-none opacity-0 lg:opacity-100'}`}>
-                            <ul className="space-y-3 flex flex-col items-start lg:items-center">
+                            <ul className="space-y-3 flex flex-col items-start">
                                 {categoriesLinks.map((link) => (
                                     <li key={link.name}>
                                         <Link to={link.path} className="text-gray-500 hover:text-[#A14D4D] transition-all duration-300 text-[15px] hover:translate-x-1 inline-block">
@@ -149,7 +149,7 @@ const Footer = () => {
                     {/* Column 5: SUPPORT */}
                     <div className="pb-4 lg:pb-0">
                         <div 
-                            className="flex justify-between items-center cursor-pointer lg:cursor-default"
+                            className="flex justify-between  cursor-pointer lg:cursor-default"
                             onClick={() => toggleSection('support')}
                         >
                             <h4 className="text-[15px] font-semibold uppercase tracking-[0.1em] mb-0 lg:mb-8 text-[#1a1a1a]">
@@ -160,7 +160,7 @@ const Footer = () => {
                             </span>
                         </div>
                         <div className={`overflow-hidden transition-all duration-300 ease-in-out ${openSection === 'support' ? 'max-h-60 opacity-100 mt-4' : 'max-h-0 lg:max-h-none opacity-0 lg:opacity-100'}`}>
-                            <ul className="space-y-3 flex flex-col items-start lg:items-center">
+                            <ul className="space-y-3 flex flex-col items-start">
                                 {supportLinks.map((link) => (
                                     <li key={link.name}>
                                         <Link to={link.path} className="text-gray-500 hover:text-[#A14D4D] transition-all duration-300 text-[15px] hover:translate-x-1 inline-block">

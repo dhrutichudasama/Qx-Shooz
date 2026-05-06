@@ -5,6 +5,7 @@ import ProductSlider from '../components/ProductSlider';
 import CollectionSection from '../components/CollectionSection';
 import BannerSection from '../components/Section6';
 import ProductsSection from '../components/Section7';
+import BackToTop from '../components/BackToTop';
 
 export default function Home() {
     return (
@@ -15,6 +16,7 @@ export default function Home() {
             <CollectionSection />
             <BannerSection />
             <ProductsSection />
+            <BackToTop />
         </>
     );
 }

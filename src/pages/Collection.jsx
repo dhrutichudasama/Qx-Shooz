@@ -13,6 +13,8 @@ export default function Collection() {
     const [gridCols, setGridCols] = useState(3);
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [selectedBrands, setSelectedBrands] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const productsPerPage = 6;
 
     // Derived Data
     const categories = useMemo(() => [...new Set(allProducts.map(p => p.category))], []);
@@ -56,7 +58,19 @@ export default function Collection() {
         }
 
         setProducts(result);
+        setCurrentPage(1);
     }, [sortOption, priceRange, selectedCategories, selectedBrands]);
+
+    // Pagination Logic
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = products.slice(indexOfFirstProduct, indexOfLastProduct);
+    const totalPages = Math.ceil(products.length / productsPerPage);
+
+    // Scroll to top on page change
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [currentPage]);
 
     const toggleCategory = (cat) => {
         setSelectedCategories(prev => 
@@ -211,21 +225,47 @@ export default function Collection() {
                         gridCols === 3 ? 'grid-cols-2 md:grid-cols-3' : 
                         'grid-cols-2 md:grid-cols-3 lg:grid-cols-4'
                     }`}>
-                        {products.map((product) => (
+                        {currentProducts.map((product) => (
                             <ProductCard key={product.id} product={{...product, price: `$${product.price.toFixed(2)}`}} />
                         ))}
                     </div>
 
                     {/* PAGINATION */}
-                    {products.length > 0 && (
+                    {products.length > productsPerPage && (
                         <div className="mt-20 flex justify-center items-center gap-4">
-                            <button className="w-10 h-10 flex items-center justify-center border border-gray-200 text-black font-semibold bg-gray-100">1</button>
-                            <button className="w-10 h-10 flex items-center justify-center border border-gray-200 text-gray-400 hover:border-black transition-colors">2</button>
-                            <button className="w-10 h-10 flex items-center justify-center border border-gray-200 text-gray-400 hover:border-black transition-colors">
-                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="9 5l7 7-7 7" />
-                                </svg>
-                            </button>
+                            {currentPage > 1 && (
+                                <button 
+                                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                    className="w-10 h-10 flex items-center justify-center border border-gray-200 text-gray-400 hover:border-black hover:text-black transition-colors"
+                                >
+                                    <svg className="w-4 h-4 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="9 5l7 7-7 7" />
+                                    </svg>
+                                </button>
+                            )}
+                            {[...Array(totalPages)].map((_, index) => (
+                                <button 
+                                    key={index + 1}
+                                    onClick={() => setCurrentPage(index + 1)}
+                                    className={`w-10 h-10 flex items-center justify-center border border-gray-200 font-semibold transition-colors ${
+                                        currentPage === index + 1 
+                                        ? 'bg-gray-100 text-black border-black' 
+                                        : 'text-gray-400 hover:border-black hover:text-black'
+                                    }`}
+                                >
+                                    {index + 1}
+                                </button>
+                            ))}
+                            {currentPage < totalPages && (
+                                <button 
+                                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                                    className="w-10 h-10 flex items-center justify-center border border-gray-200 text-gray-400 hover:border-black hover:text-black transition-colors"
+                                >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="9 5l7 7-7 7" />
+                                    </svg>
+                                </button>
+                            )}
                         </div>
                     )}
 

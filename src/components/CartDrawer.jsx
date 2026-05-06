@@ -4,8 +4,9 @@ import { useShop } from '../context/ShopContext';
 import { useNavigate } from 'react-router-dom';
 
 const CartDrawer = ({ isOpen, onClose }) => {
-  const { cartItems, updateQuantity, removeFromCart, cartCount } = useShop();
+  const { cartItems, updateQuantity, removeFromCart, cartCount, clearCart } = useShop();
   const navigate = useNavigate();
+  const [isOrderPlaced, setIsOrderPlaced] = React.useState(false);
 
   const freeShippingThreshold = 1000;
   const totalPrice = cartItems.reduce((acc, item) => {
@@ -31,6 +32,25 @@ const CartDrawer = ({ isOpen, onClose }) => {
     onClose();
     navigate('/cart');
   };
+
+  const handleCheckout = () => {
+    // Simulate order placement
+    setIsOrderPlaced(true);
+    // Optionally clear cart after success
+    // clearCart(); 
+  };
+
+  const handleContinueShopping = () => {
+    setIsOrderPlaced(false);
+    onClose();
+  };
+
+  // Reset order status when drawer is closed
+  useEffect(() => {
+    if (!isOpen) {
+      setTimeout(() => setIsOrderPlaced(false), 500); // Wait for transition to finish
+    }
+  }, [isOpen]);
 
   return (
     <>
@@ -62,8 +82,10 @@ const CartDrawer = ({ isOpen, onClose }) => {
         </div>
 
         {/* Content Area (Scrollable) */}
-        <div className="flex-1 overflow-y-auto px-5 py-4 custom-scrollbar">
-          {/* Free Shipping Progress */}
+        <div className="flex-1 overflow-y-auto px-5 py-4 custom-scrollbar flex flex-col">
+          {!isOrderPlaced ? (
+            <>
+              {/* Free Shipping Progress */}
           <div className="mb-8">
             <div className="flex items-center gap-2 mb-2 text-sm text-gray-600">
               <FiTruck className="text-[#C06C84]" />
@@ -140,48 +162,73 @@ const CartDrawer = ({ isOpen, onClose }) => {
               </div>
             )}
           </div>
+        </>
+      ) : (
+        <div className="flex-1 flex flex-col items-center justify-center text-center animate-fadeIn">
+          <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6">
+            <svg className="w-10 h-10 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h3 className="text-2xl font-bold text-[#111111] mb-2">Order Placed!</h3>
+          <p className="text-gray-500 mb-8 max-w-[280px]">
+            Your order has been placed successfully. You will receive a confirmation email shortly.
+          </p>
+          <button 
+            onClick={handleContinueShopping}
+            className="bg-[#C06C84] text-white px-8 py-3 rounded-md font-bold uppercase tracking-widest text-sm hover:bg-[#a55b70] transition-all shadow-lg shadow-[#C06C84]/20"
+          >
+            Continue Shopping
+          </button>
         </div>
+      )}
+    </div>
 
         {/* Bottom Section */}
-        <div className="p-5 border-t border-gray-100 bg-[#F9F9F9]/50">
-          {/* Options */}
-          <div className="grid grid-cols-3 gap-2 mb-6">
-            <button className="flex flex-col items-center gap-1.5 py-3 rounded-lg hover:bg-white transition-all text-gray-600 hover:text-[#C06C84]">
-              <FiEdit3 size={18} />
-              <span className="text-[11px] font-medium uppercase tracking-tight">Order Note</span>
-            </button>
-            <button className="flex flex-col items-center gap-1.5 py-3 rounded-lg hover:bg-white transition-all text-gray-600 hover:text-[#C06C84]">
-              <FiTag size={18} />
-              <span className="text-[11px] font-medium uppercase tracking-tight">Coupon</span>
-            </button>
-            <button className="flex flex-col items-center gap-1.5 py-3 rounded-lg hover:bg-white transition-all text-gray-600 hover:text-[#C06C84]">
-              <FiTruck size={18} />
-              <span className="text-[11px] font-medium uppercase tracking-tight">Shipping</span>
-            </button>
-          </div>
-
-          {/* Total Section */}
-          <div className="space-y-2 mb-6">
-            <div className="flex justify-between items-center">
-              <span className="text-lg font-bold text-[#111111]">Total:</span>
-              <span className="text-xl font-bold text-[#111111]">${totalPrice.toFixed(2)}</span>
+        {!isOrderPlaced && (
+          <div className="p-5 border-t border-gray-100 bg-[#F9F9F9]/50">
+            {/* Options */}
+            <div className="grid grid-cols-3 gap-2 mb-6">
+              <button className="flex flex-col items-center gap-1.5 py-3 rounded-lg hover:bg-white transition-all text-gray-600 hover:text-[#C06C84]">
+                <FiEdit3 size={18} />
+                <span className="text-[11px] font-medium uppercase tracking-tight">Order Note</span>
+              </button>
+              <button className="flex flex-col items-center gap-1.5 py-3 rounded-lg hover:bg-white transition-all text-gray-600 hover:text-[#C06C84]">
+                <FiTag size={18} />
+                <span className="text-[11px] font-medium uppercase tracking-tight">Coupon</span>
+              </button>
+              <button className="flex flex-col items-center gap-1.5 py-3 rounded-lg hover:bg-white transition-all text-gray-600 hover:text-[#C06C84]">
+                <FiTruck size={18} />
+                <span className="text-[11px] font-medium uppercase tracking-tight">Shipping</span>
+              </button>
             </div>
-            <p className="text-xs text-gray-500">Taxes and shipping calculated at checkout</p>
-          </div>
 
-          {/* Checkout Button */}
-          <div className="flex gap-2">
-            <button 
-                onClick={handleViewCart}
-                className="w-full bg-black hover:bg-gray-800 text-white py-4 transition-colors tracking-widest text-sm uppercase font-bold"
-            >
-               View Cart
-            </button>
-            <button className="w-full bg-[#C06C84] hover:bg-[#a55b70] text-white py-4 transition-colors tracking-widest text-sm shadow-lg shadow-[#C06C84]/20 uppercase font-bold">
-              Check Out
-            </button>
+            {/* Total Section */}
+            <div className="space-y-2 mb-6">
+              <div className="flex justify-between items-center">
+                <span className="text-lg font-bold text-[#111111]">Total:</span>
+                <span className="text-xl font-bold text-[#111111]">${totalPrice.toFixed(2)}</span>
+              </div>
+              <p className="text-xs text-gray-500">Taxes and shipping calculated at checkout</p>
+            </div>
+
+            {/* Checkout Button */}
+            <div className="flex gap-2">
+              <button 
+                  onClick={handleViewCart}
+                  className="w-full bg-black hover:bg-gray-800 text-white py-4 transition-colors tracking-widest text-sm uppercase font-bold"
+              >
+                View Cart
+              </button>
+              <button 
+                onClick={handleCheckout}
+                className="w-full bg-[#C06C84] hover:bg-[#a55b70] text-white py-4 transition-colors tracking-widest text-sm shadow-lg shadow-[#C06C84]/20 uppercase font-bold"
+              >
+                Check Out
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   );

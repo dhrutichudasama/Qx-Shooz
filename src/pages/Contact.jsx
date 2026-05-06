@@ -83,15 +83,6 @@ const Contact = () => {
                                 </div>
                             </div>
                         </div>
-
-                        <div className="relative group overflow-hidden rounded-sm shadow-xl">
-                            <img 
-                                src={col1} 
-                                alt="Contact Us" 
-                                className="w-full h-[400px] object-cover transition-transform duration-700 group-hover:scale-105" 
-                            />
-                            <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors duration-500"></div>
-                        </div>
                     </motion.div>
 
                     {/* Right Column: Contact Form */}

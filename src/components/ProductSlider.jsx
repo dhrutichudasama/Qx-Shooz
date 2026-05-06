@@ -64,13 +64,12 @@ export default function ProductSlider() {
             default: // featured
                 return [...products]
                     .sort((a, b) => parseFloat(a.price.slice(1)) - parseFloat(b.price.slice(1)))
-                    .slice(0, 4); // lowest price = featured
+                    .slice(0, 8); // lowest price = featured
         }
     };
 
     return (
         <>
-
             <section className="py-16 px-6 md:px-14">
 
                 {/* Heading */}
@@ -173,7 +172,7 @@ export default function ProductSlider() {
                             Our collection features comfortable and stylish footwear designed to keep your feet happy all day long.
                         </p>
 
-                        <button className="bg-red-500 text-white px-6 py-3 text-sm font-medium hover:bg-black transition-all">
+                        <button className="bg-red-500 text-white px-6 py-3 text-sm font-medium hover:bg-black transition-all" onClick={() => { navigate('/products'); }}>
                             SHOP NOW →
                         </button>
 

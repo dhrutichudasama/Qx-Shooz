@@ -2,10 +2,12 @@ import React from 'react';
 import { FiShoppingCart, FiEye, FiHeart, FiRepeat } from "react-icons/fi";
 import { useShop } from '../context/ShopContext';
 import { useNavigate } from 'react-router-dom';
+import QuickViewModal from './QuickViewModal';
 
 export default function ProductCard({ product }) {
     const { addToCart, addToWishlist, wishlistItems } = useShop();
     const navigate = useNavigate();
+    const [isQuickViewOpen, setIsQuickViewOpen] = React.useState(false);
     
     const isInWishlist = wishlistItems.some(item => item.title === product.title);
 
@@ -80,7 +82,14 @@ export default function ProductCard({ product }) {
 
                 {/* Icons */}
                 <div className="flex items-center gap-3 text-gray-400">
-                    <FiEye className="cursor-pointer hover:text-black transition-colors text-[17px]" title="Quick View" />
+                    <FiEye 
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setIsQuickViewOpen(true);
+                        }}
+                        className="cursor-pointer hover:text-black transition-colors text-[17px]" 
+                        title="Quick View" 
+                    />
                     <FiHeart 
                         onClick={() => addToWishlist(product)}
                         className={`cursor-pointer transition-colors text-[17px] ${isInWishlist ? 'text-red-500 fill-red-500' : 'hover:text-black'}`} 
@@ -89,6 +98,12 @@ export default function ProductCard({ product }) {
                     <FiRepeat className="cursor-pointer hover:text-black transition-colors text-[15px]" title="Compare" />
                 </div>
             </div>
+
+            <QuickViewModal 
+                product={product} 
+                isOpen={isQuickViewOpen} 
+                onClose={() => setIsQuickViewOpen(false)} 
+            />
         </div>
     );
 }

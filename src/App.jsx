@@ -4,6 +4,7 @@ import { Toaster } from 'react-hot-toast';
 import { ShopProvider } from './context/ShopContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 import Home from './pages/Home';
 import Wishlist from './pages/Wishlist';
 import Cart from './pages/Cart';
@@ -21,6 +22,7 @@ function App() {
       <Router>
         <div className="min-h-screen bg-white">
           <Toaster position="top-right" reverseOrder={false} />
+          <ScrollToTop />
           <Header />
           <main className="pt-[80px] min-[1000px]:pt-[160px]">
             <Routes>
